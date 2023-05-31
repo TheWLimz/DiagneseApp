@@ -104,7 +104,7 @@ fun LandingScreen(
                 )
             } else {
                 Text(
-                    modifier = Modifier.padding(top = 20.dp),
+                    modifier = Modifier.padding(20.dp),
                     text = landingScreen.description,
                     fontSize = Constants.XL_FONT_SIZE.sp,
                     textAlign = TextAlign.Center,

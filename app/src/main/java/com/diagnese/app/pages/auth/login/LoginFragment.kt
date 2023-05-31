@@ -27,12 +27,17 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.registerTextBtn.setOnClickListener{
             Navigation.findNavController(it).navigate(R.id.action_loginFragment_to_firstRegisterFragment)
         }
 
         binding.formLoginCard.loginButton.setOnClickListener {
             startActivity(Intent(requireActivity(), MainActivity::class.java))
+        }
+
+        binding.formLoginCard.forgotPasswordButton.setOnClickListener{
+            Navigation.findNavController(it).navigate(R.id.action_loginFragment_to_firstForgetPasswordFragment)
         }
     }
 
