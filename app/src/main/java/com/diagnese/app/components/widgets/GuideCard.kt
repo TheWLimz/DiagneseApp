@@ -57,8 +57,8 @@ fun GuideCard(
                     .conditional(
                         buttonMenu.isNotEmpty(),
                         isTrue = {
-                            height(168.dp)
-                            width(168.dp)
+                            height(160.dp)
+                            width(160.dp)
                         },
                         isFalse = {
                             height(120.dp)

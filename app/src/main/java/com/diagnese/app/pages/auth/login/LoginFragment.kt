@@ -6,16 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.diagnese.app.R
 import com.diagnese.app.databinding.FragmentLoginBinding
 import com.diagnese.app.pages.home.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private var _binding : FragmentLoginBinding? = null
     private val binding : FragmentLoginBinding get() = _binding!!
+
+    private val loginViewModel by viewModels<LoginViewModel>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,12 +38,34 @@ class LoginFragment : Fragment() {
             Navigation.findNavController(it).navigate(R.id.action_loginFragment_to_firstRegisterFragment)
         }
 
+
+
         binding.formLoginCard.loginButton.setOnClickListener {
+            val email = binding.formLoginCard.firstLoginEditText.text.toString().trim()
+            val password = binding.formLoginCard.secondLoginEditText.text.toString().trim()
+            validate(email, password)
+            loginViewModel.login(email, password)
             startActivity(Intent(requireActivity(), MainActivity::class.java))
         }
 
         binding.formLoginCard.forgotPasswordButton.setOnClickListener{
             Navigation.findNavController(it).navigate(R.id.action_loginFragment_to_firstForgetPasswordFragment)
+        }
+
+
+    }
+
+
+
+    private fun validate(email : String, password : String){
+        when{
+            email.isEmpty() -> {
+                binding.formLoginCard.firstLoginTextField.error = "Email must not be empty"
+            }
+            password.isEmpty() -> {
+                binding.formLoginCard.secondLoginTextField.error = "Password must not be empty"
+            }
+
         }
     }
 
