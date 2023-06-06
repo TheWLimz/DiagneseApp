@@ -1,5 +1,6 @@
 package com.diagnese.app.core.di
 
+import com.diagnese.app.core.data.network.disease.DiseaseApiService
 import com.diagnese.app.core.data.network.news.NewsApiService
 import dagger.Module
 import dagger.Provides
@@ -9,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -37,5 +39,15 @@ class NetworkModule {
         return retrofit.create(NewsApiService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideDiseaseApiService(client: OkHttpClient) : DiseaseApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://diagnese-api-flask-vr2z5jb7da-et.a.run.app/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        return retrofit.create(DiseaseApiService::class.java)
+    }
 
 }

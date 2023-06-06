@@ -1,5 +1,7 @@
 package com.diagnese.app.di
 
+import com.diagnese.app.core.domain.usecase.disease.DiseaseInteractor
+import com.diagnese.app.core.domain.usecase.disease.DiseaseUseCase
 import com.diagnese.app.core.domain.usecase.firebase.FirebaseInteractor
 import com.diagnese.app.core.domain.usecase.firebase.FirebaseUseCase
 import com.diagnese.app.core.domain.usecase.news.NewsInteractor
@@ -21,6 +23,10 @@ abstract class AppModule {
     @Binds
     @ViewModelScoped
     abstract fun provideNewsUseCase(newsInteractor: NewsInteractor) : NewsUseCase
+
+    @Binds
+    @ViewModelScoped
+    abstract fun provideDiseaseUseCase(diseaseInteractor: DiseaseInteractor) : DiseaseUseCase
 
 
 }

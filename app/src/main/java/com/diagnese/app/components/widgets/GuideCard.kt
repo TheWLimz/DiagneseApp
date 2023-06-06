@@ -1,7 +1,9 @@
 package com.diagnese.app.components.widgets
 
 
+import android.content.Intent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.diagnese.app.utils.Constants
 import com.diagnese.app.R
 import com.diagnese.app.model.Data
+import com.diagnese.app.pages.glosary.GlosaryActivity
 
 @Composable
 fun GuideCard(
@@ -30,9 +33,10 @@ fun GuideCard(
     image : Int,
     title : String,
     slug : String,
-    buttonMenu : String
+    buttonMenu : String,
+    onButtonClick : () -> Unit = {},
+    onCardClick : () -> Unit = {}
 ){
-    val context = LocalContext.current
 
     Card(
         modifier = modifier
@@ -44,6 +48,7 @@ fun GuideCard(
             },
                 isFalse = {
                     height(120.dp)
+                    clickable {  onCardClick() }
                 }
             ),
         shape = Constants.CARD_CORNER_RADIUS,
@@ -87,7 +92,7 @@ fun GuideCard(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 if(buttonMenu.isNotEmpty()){
-                    ButtonComponent(buttonMenu = buttonMenu, onClick = {})
+                    ButtonComponent(buttonMenu = buttonMenu, onClick = onButtonClick)
                 }
             }
         }
@@ -111,12 +116,17 @@ internal fun Modifier.conditional(
 @Composable
 fun GuideCardView(){
 
+    val context = LocalContext.current
+
    Column {
        Data.guideItemList.forEach{ item ->
            GuideCard(image = item.image,
                title = item.title,
                slug = item.slug,
-               buttonMenu = item.buttonMenu
+               buttonMenu = item.buttonMenu,
+               onCardClick = {
+                   context.startActivity(Intent(context, GlosaryActivity::class.java))
+               }
            )
        }
    }
