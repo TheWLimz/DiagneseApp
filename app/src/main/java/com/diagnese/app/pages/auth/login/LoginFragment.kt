@@ -6,11 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.diagnese.app.R
 import com.diagnese.app.databinding.FragmentLoginBinding
 import com.diagnese.app.pages.home.MainActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -21,6 +26,18 @@ class LoginFragment : Fragment() {
     private val binding : FragmentLoginBinding get() = _binding!!
 
     private val loginViewModel by viewModels<LoginViewModel>()
+
+
+    private val googleSignInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+        try {
+            val result = account.getResult(ApiException::class.java)
+            val credentials = GoogleAuthProvider.getCredential(result.idToken,null )
+            loginViewModel.loginWithGoogle(credentials)
+        } catch (it : ApiException){
+            it.printStackTrace()
+        }
+    }
 
 
     override fun onCreateView(
@@ -50,6 +67,17 @@ class LoginFragment : Fragment() {
 
         binding.formLoginCard.forgotPasswordButton.setOnClickListener{
             Navigation.findNavController(it).navigate(R.id.action_loginFragment_to_firstForgetPasswordFragment)
+        }
+
+        binding.formLoginCard.googleButton.setOnClickListener{
+             val gso =  GoogleSignInOptions
+                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                 .requestIdToken(getString(R.string.default_web_client_id))
+                 .requestEmail()
+                 .build()
+
+            val googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+            googleSignInLauncher.launch(googleSignInClient.signInIntent)
         }
 
 

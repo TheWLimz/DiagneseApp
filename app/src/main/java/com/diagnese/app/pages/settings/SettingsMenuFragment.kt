@@ -1,5 +1,6 @@
 package com.diagnese.app.pages.settings
 
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ import com.diagnese.app.components.widgets.CenterAppBar
 import com.diagnese.app.components.widgets.SettingComponent
 import com.diagnese.app.model.Data
 import com.diagnese.app.model.SettingsMenuItem
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 class SettingsMenuFragment : Fragment() {
@@ -58,7 +60,8 @@ fun SettingsMenu(
                SettingComponent(
                    leading = menuItem.leadingIcon,
                    title = menuItem.title,
-                   trailing = menuItem.trailingIcon
+                   trailing = menuItem.trailingIcon,
+
                )
                Divider(color = Color.LightGray)
            }
@@ -81,3 +84,6 @@ fun SettingsMenu(
     }
     
 }
+
+
+

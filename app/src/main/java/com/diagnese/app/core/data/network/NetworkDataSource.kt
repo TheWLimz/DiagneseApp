@@ -2,6 +2,8 @@ package com.diagnese.app.core.data.network
 
 import com.diagnese.app.core.data.network.disease.DiseaseApiService
 import com.diagnese.app.core.data.network.disease.DiseaseResponse
+import com.diagnese.app.core.data.network.disease.PredictResponse
+import com.diagnese.app.core.data.network.disease.SymptomsResponse
 import com.diagnese.app.core.data.network.news.NewsApiService
 import com.diagnese.app.core.data.network.news.NewsResponse
 import com.diagnese.app.core.data.state.Resource
@@ -9,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import org.json.JSONObject
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,7 +23,7 @@ class NetworkDataSource @Inject constructor(
 
     suspend fun getAllNews(
         key : String,
-        country : String = "id",
+        country : String = "us",
        category: String = "health"
     ) : Flow<Resource<NewsResponse>>{
         return flow {
@@ -53,6 +56,38 @@ class NetworkDataSource @Inject constructor(
             } catch (e : Exception){
                 emit(Resource.Error(e.toString()))
             }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun predictDisease(predictRequest: JSONObject) : Flow<Resource<PredictResponse>>{
+        return flow {
+            try {
+                val response = diseaseApiService.predictDisease(predictRequest)
+                if (response.code == 200){
+                    emit(Resource.Success(response))
+                } else{
+                    emit(Resource.Error(response.message))
+                }
+            } catch (e : Exception){
+                emit(Resource.Error(e.toString()))
+            }
+
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getSymptoms() : Flow<Resource<SymptomsResponse>>{
+        return flow {
+            try {
+                val response = diseaseApiService.getSymptoms()
+                if (response.code == 200){
+                    emit(Resource.Success(response))
+                } else{
+                    emit(Resource.Error(response.message))
+                }
+            } catch (e : Exception){
+                emit(Resource.Error(e.toString()))
+            }
+
         }.flowOn(Dispatchers.IO)
     }
 }

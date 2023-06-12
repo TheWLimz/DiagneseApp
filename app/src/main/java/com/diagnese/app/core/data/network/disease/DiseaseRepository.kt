@@ -4,6 +4,7 @@ import com.diagnese.app.core.data.network.NetworkDataSource
 import com.diagnese.app.core.data.state.Resource
 import com.diagnese.app.core.domain.repository.IDiseaseRepository
 import kotlinx.coroutines.flow.Flow
+import org.json.JSONObject
 import javax.inject.Inject
 
 class DiseaseRepository @Inject constructor(
@@ -12,6 +13,14 @@ class DiseaseRepository @Inject constructor(
 
     override suspend fun getAllDiseaseData(): Flow<Resource<DiseaseResponse>> {
         return networkDataSource.getAllDiseaseData()
+    }
+
+    override suspend fun predictDisease(predictRequest: JSONObject): Flow<Resource<PredictResponse>> {
+        return networkDataSource.predictDisease(predictRequest)
+    }
+
+    override suspend fun getSymptoms(): Flow<Resource<SymptomsResponse>> {
+        return networkDataSource.getSymptoms()
     }
 
 

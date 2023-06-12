@@ -3,6 +3,7 @@ package com.diagnese.app.pages.home
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
@@ -30,10 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -47,11 +45,14 @@ import com.diagnese.app.utils.Constants
 import com.diagnese.app.R
 import com.diagnese.app.components.widgets.ButtonComponent
 import com.diagnese.app.components.widgets.CenterAppBar
+import com.diagnese.app.components.widgets.GuestCard
 import com.diagnese.app.components.widgets.GuideCardView
+import com.diagnese.app.components.widgets.Loading
 import com.diagnese.app.components.widgets.NewsCard
 import com.diagnese.app.components.widgets.UserCard
 import com.diagnese.app.model.CardItem
 import com.diagnese.app.pages.bookmark.BookmarkActivity
+import com.diagnese.app.pages.checkup.CheckupActivity
 import com.diagnese.app.pages.news.NewsActivity
 import com.diagnese.app.pages.settings.SettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -76,9 +77,13 @@ fun MainPage(
     viewModel: MainViewModel
 ){
 
+
     val context = LocalContext.current
     val newsLiveData = viewModel.newsPagingData.observeAsState()
     val newsData = newsLiveData.value?.data?.articles
+
+    val currentUser = viewModel.loginResultState.observeAsState()
+
 
 
     Scaffold( 
@@ -145,7 +150,9 @@ fun MainPage(
                                         fontFamily = Constants.FONT_FAMILY_BOLD,
                                     )
                                     Spacer(modifier = Modifier.height(10.dp))
-                                    ButtonComponent(buttonMenu = welcomeText.buttonMenu, modifier = Modifier.width(150.dp))
+                                    ButtonComponent(buttonMenu = welcomeText.buttonMenu, modifier = Modifier.width(150.dp), onClick = {
+                                        context.startActivity(Intent(context, CheckupActivity::class.java))
+                                    })
                                 }
 
                                 Image(painter = painterResource(id = R.drawable.mainpage),
@@ -159,7 +166,14 @@ fun MainPage(
                  }
 
                  item{
-                     UserCard()
+                    if(currentUser.value == null){
+                        GuestCard()
+                    } else {
+                        UserCard(
+                            name = currentUser.value?.child("name")?.value as String,
+                            age = (currentUser.value?.child("age")?.value as Long).toString()
+                        )
+                    }
                  }
 
                  item {
@@ -191,9 +205,15 @@ fun MainPage(
 
                  item {
                      LazyRow(modifier = Modifier.padding(10.dp)){
-                         items(items = newsData ?: emptyList(), key = { item -> item.title!! }){
-                             NewsCard(imageUrl = it.url, title = it.title ?: "")
-                         }
+                        if(newsData == null){
+                            item {
+                                Loading()
+                            }
+                        } else {
+                            items(items = newsData, key = { item -> item.title!! }){
+                                NewsCard(imageUrl = it.url, title = it.title ?: "")
+                            }
+                        }
 
                      }
                  }

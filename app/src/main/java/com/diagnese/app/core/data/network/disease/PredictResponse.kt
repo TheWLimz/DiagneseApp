@@ -2,13 +2,13 @@ package com.diagnese.app.core.data.network.disease
 
 import com.google.gson.annotations.SerializedName
 
-data class DiseaseResponse(
+data class PredictResponse(
 
 	@field:SerializedName("code")
 	val code: Int,
 
 	@field:SerializedName("data")
-	val data: List<DiseaseItem>,
+	val data: PredictData,
 
 	@field:SerializedName("message")
 	val message: String,
@@ -17,7 +17,7 @@ data class DiseaseResponse(
 	val status: String
 )
 
-data class DiseaseItem(
+data class PredictData(
 
 	@field:SerializedName("spesialis")
 	val spesialis: String,
@@ -28,5 +28,3 @@ data class DiseaseItem(
 	@field:SerializedName("prognosis")
 	val prognosis: String
 )
-
-

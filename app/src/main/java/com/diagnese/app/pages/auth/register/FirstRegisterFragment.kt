@@ -50,14 +50,12 @@ class FirstRegisterFragment : Fragment() {
             genderText = selectedGender.text.toString()
 
 
-            val secondRegisterFragment = SecondRegisterFragment()
             Log.d("passed data", "$age, $name, $genderText")
             validate(name, age)
             bundle.putString(GENDER, genderText)
             bundle.putString(NAME, name)
             bundle.putString(AGE, age)
-            secondRegisterFragment.arguments = bundle
-            Navigation.findNavController(it).navigate(R.id.action_firstRegisterFragment_to_secondRegisterFragment)
+            Navigation.findNavController(it).navigate(R.id.action_firstRegisterFragment_to_secondRegisterFragment, bundle)
         }
 
         binding.loginTextBtn.setOnClickListener{

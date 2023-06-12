@@ -18,13 +18,6 @@ class RegisterViewModel @Inject constructor(private val firebaseUseCase: Firebas
     private val _registerState = MutableStateFlow<Resource<FirebaseUser>?>(null)
     val registerState : StateFlow<Resource<FirebaseUser>?> = _registerState
 
-    val currentUser : FirebaseUser? get() = firebaseUseCase.firebaseUser
-
-    init {
-        if(firebaseUseCase.firebaseUser != null){
-            _registerState.value = Resource.Success(firebaseUseCase.firebaseUser!!)
-        }
-    }
 
 
     fun register(email: String, password : String, user : User) = viewModelScope.launch {

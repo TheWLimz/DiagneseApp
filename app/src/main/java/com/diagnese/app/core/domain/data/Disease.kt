@@ -1,7 +1,5 @@
 package com.diagnese.app.core.domain.data
 
-
-
 data class Disease(
     val code : Int,
     val data : List<DiseaseData>,

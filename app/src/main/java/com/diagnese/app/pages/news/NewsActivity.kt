@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.diagnese.app.components.widgets.CenterAppBar
+import com.diagnese.app.components.widgets.Loading
 import com.diagnese.app.components.widgets.NewsCard
 import com.diagnese.app.components.widgets.SearchTextField
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +44,7 @@ fun NewsPage(
 ){
     val context = LocalContext.current
     val data = viewModel.newsData.observeAsState()
-    val newsList = data.value?.articles
+    val newsData = data.value?.articles
 
     Scaffold(
         topBar = {
@@ -53,15 +54,21 @@ fun NewsPage(
         Column(modifier = Modifier
             .padding(paddingValues)
             .fillMaxSize(),
-            verticalArrangement = Arrangement.Center
         ){
             SearchTextField(label = "Search for Articles...", modifier = Modifier.padding(10.dp))
 
             Spacer(modifier = Modifier.height(10.dp))
-            LazyColumn{
-                   items(items = newsList ?: emptyList(), key = {item -> item.title!! }){
-                       NewsCard(imageUrl = it.url, title = it.title ?: "")
-                   }
+
+            LazyColumn(verticalArrangement = Arrangement.Center){
+                if(newsData == null){
+                    item {
+                        Loading()
+                    }
+                } else {
+                    items(items = newsData, key = { item -> item.title!! }){
+                        NewsCard(imageUrl = it.url, title = it.title ?: "")
+                    }
+                }
                }
            }
         }

@@ -1,6 +1,7 @@
 package com.diagnese.app.pages.auth.register
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ class SecondRegisterFragment : Fragment() {
 
     private val registerViewModel by viewModels<RegisterViewModel>()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,19 +35,24 @@ class SecondRegisterFragment : Fragment() {
 
 
 
+        val age = arguments?.getString(FirstRegisterFragment.AGE)
+        val name = arguments?.getString(FirstRegisterFragment.NAME)
+        val gender = arguments?.getString(FirstRegisterFragment.GENDER)
+
+
+        Log.d("passed data", "$age, $name, $gender")
+
+
+
         binding.loginTextBtn.setOnClickListener{
             Navigation.findNavController(it).navigate(R.id.action_secondRegisterFragment_to_loginFragment)
         }
 
-        val age = arguments?.getString(FirstRegisterFragment.AGE)
-        val name = arguments?.getString(FirstRegisterFragment.NAME)
-        val gender = arguments?.getString(FirstRegisterFragment.GENDER)
 
         binding.formSecondRegister.registerButton.setOnClickListener {
             val email = binding.formSecondRegister.firstRegisterSecondEditText.text.toString().trim()
             val password = binding.formSecondRegister.secondRegistersSecondEditText.text.toString().trim()
             val confirmPassword = binding.formSecondRegister.thirdRegisterSecondEditText.text.toString().trim()
-
 
             val user = User(
                 email = email,
@@ -53,6 +60,7 @@ class SecondRegisterFragment : Fragment() {
                 name = name ?: "",
                 gender = gender ?: ""
             )
+
             validate(email, password, confirmPassword)
             registerViewModel.register(email, password, user)
             Navigation.findNavController(it).navigate(R.id.action_secondRegisterFragment_to_loginFragment)

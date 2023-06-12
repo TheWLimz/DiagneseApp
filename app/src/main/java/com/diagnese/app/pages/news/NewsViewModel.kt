@@ -22,7 +22,7 @@ class NewsViewModel @Inject constructor(private val newsUseCase: NewsUseCase) : 
     }
 
 
-    fun getAllNews(key : String) = viewModelScope.launch {
+    private fun getAllNews(key : String) = viewModelScope.launch {
         newsUseCase.getAllNews(key).collect{ response ->
             _newsData.postValue(response.data!!)
         }

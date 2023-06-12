@@ -34,6 +34,7 @@ android {
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
         buildConfigField "String", "API_KEY", "\"${properties.getProperty('API_KEY')}\""
+        buildConfigField "String", "WEB_CLIENT_ID", "\"${properties.getProperty('WEB_CLIENT_ID')}\""
     }
 
     buildTypes {
@@ -104,14 +105,10 @@ dependencies {
 
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
-    implementation 'androidx.paging:paging-compose:1.0.0-alpha10'
+    implementation 'androidx.paging:paging-compose:1.0.0-alpha20'
 
-
-
-
-
-
-
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.21"
 
 
 }
