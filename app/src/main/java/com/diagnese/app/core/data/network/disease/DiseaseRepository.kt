@@ -15,11 +15,11 @@ class DiseaseRepository @Inject constructor(
         return networkDataSource.getAllDiseaseData()
     }
 
-    override suspend fun predictDisease(predictRequest: JSONObject): Flow<Resource<PredictResponse>> {
+    override suspend fun predictDisease(predictRequest: JSONObject): Flow<Resource<PostResponse>> {
         return networkDataSource.predictDisease(predictRequest)
     }
 
-    override suspend fun getSymptoms(): Flow<Resource<SymptomsResponse>> {
+    override suspend fun getSymptoms(): Flow<Resource<PredictionResponse>> {
         return networkDataSource.getSymptoms()
     }
 

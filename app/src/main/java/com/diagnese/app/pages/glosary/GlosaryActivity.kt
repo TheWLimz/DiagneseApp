@@ -62,12 +62,18 @@ fun GlosaryPage(
 
     Scaffold(
         topBar = {
-            CenterAppBar(context = context, title = "List of Disease", actions = {
-               Dropdown {
-                   Text(text = "Sort by Descending ( Z - A )", fontFamily = Constants.FONT_FAMILY_BOLD)
-                   Text(text = "Sort by Ascending ( A - Z )", fontFamily = Constants.FONT_FAMILY_BOLD)
-               }
-            })
+            CenterAppBar(context = context, title = "List of Disease") {
+                Dropdown {
+                    Text(
+                        text = "Sort by Descending ( Z - A )",
+                        fontFamily = Constants.FONT_FAMILY_BOLD
+                    )
+                    Text(
+                        text = "Sort by Ascending ( A - Z )",
+                        fontFamily = Constants.FONT_FAMILY_BOLD
+                    )
+                }
+            }
         }
     ) {   paddingValues ->
        Column(modifier = modifier

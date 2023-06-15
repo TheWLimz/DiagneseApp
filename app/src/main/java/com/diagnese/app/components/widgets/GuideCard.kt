@@ -2,6 +2,7 @@ package com.diagnese.app.components.widgets
 
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -127,6 +128,9 @@ fun GuideCardView(){
                title = item.title,
                slug = item.slug,
                buttonMenu = item.buttonMenu,
+               onButtonClick = {
+                  Toast.makeText(context, "Coming Soon! Stay Tuned", Toast.LENGTH_SHORT).show()
+               },
                onCardClick = {
                    context.startActivity(Intent(context, GlosaryActivity::class.java))
                }

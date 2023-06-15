@@ -11,9 +11,9 @@ interface DiseaseApiService {
     suspend fun getAllDiseaseData() : DiseaseResponse
 
     @POST("predict")
-    suspend fun predictDisease(@Body predictRequest : JSONObject) : PredictResponse
+    suspend fun predictDisease(@Body predictRequest : JSONObject) : PostResponse
 
     @GET("predict")
-    suspend fun getSymptoms() : SymptomsResponse
+    suspend fun getSymptoms() : PredictionResponse
 
 }

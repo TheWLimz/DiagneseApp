@@ -3,7 +3,6 @@ package com.diagnese.app.pages.home
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
@@ -23,8 +22,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -50,10 +49,12 @@ import com.diagnese.app.components.widgets.GuideCardView
 import com.diagnese.app.components.widgets.Loading
 import com.diagnese.app.components.widgets.NewsCard
 import com.diagnese.app.components.widgets.UserCard
+import com.diagnese.app.core.data.local.NewsEntity
 import com.diagnese.app.model.CardItem
 import com.diagnese.app.pages.bookmark.BookmarkActivity
 import com.diagnese.app.pages.checkup.CheckupActivity
 import com.diagnese.app.pages.news.NewsActivity
+import com.diagnese.app.pages.news.NewsDetailActivity
 import com.diagnese.app.pages.settings.SettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -91,22 +92,21 @@ fun MainPage(
            CenterAppBar(
                context = context,
                title = "Good Morning".uppercase(),
-               navIcons = Icons.Outlined.Bookmark,
+               navIcons = Icons.Default.Bookmark,
                onNavClick = {
                     context.startActivity(Intent(context, BookmarkActivity::class.java))
-               },
-               actions = {
-                   IconButton(onClick = {
-                       context.startActivity(Intent(context, SettingsActivity::class.java))
-                   }) {
-                       Icon(
-                           Icons.Filled.Settings,
-                           contentDescription = null,
-                           tint = Color.White
-                       )
-                   }
                }
-           )
+           ) {
+               IconButton(onClick = {
+                   context.startActivity(Intent(context, SettingsActivity::class.java))
+               }) {
+                   Icon(
+                       Icons.Filled.Settings,
+                       contentDescription = null,
+                       tint = Color.White
+                   )
+               }
+           }
         }
     ) { paddingValues ->
          Box(modifier = Modifier
@@ -211,7 +211,23 @@ fun MainPage(
                             }
                         } else {
                             items(items = newsData, key = { item -> item.title!! }){
-                                NewsCard(imageUrl = it.url, title = it.title ?: "")
+                                NewsCard(
+                                    imageUrl = it.urlToImage as String,
+                                    title = it.title ?: "",
+                                    onClick = {
+                                        val intent = Intent(context, NewsDetailActivity::class.java)
+                                        intent.putExtra("url", it.url)
+                                        context.startActivity(intent)
+                                    },
+                                    onBookmarked = {
+                                        val newsEntity = NewsEntity(
+                                            image = it.urlToImage,
+                                            title = it.title!!,
+                                            author = it.author!!,
+                                        )
+                                        viewModel.insertBookmark(newsEntity)
+                                    }
+                                )
                             }
                         }
 

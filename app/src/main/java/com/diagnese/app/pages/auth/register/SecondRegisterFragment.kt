@@ -63,6 +63,7 @@ class SecondRegisterFragment : Fragment() {
 
             validate(email, password, confirmPassword)
             registerViewModel.register(email, password, user)
+            registerViewModel.getUser()
             Navigation.findNavController(it).navigate(R.id.action_secondRegisterFragment_to_loginFragment)
         }
     }

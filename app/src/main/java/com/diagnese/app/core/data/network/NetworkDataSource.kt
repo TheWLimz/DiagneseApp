@@ -2,8 +2,8 @@ package com.diagnese.app.core.data.network
 
 import com.diagnese.app.core.data.network.disease.DiseaseApiService
 import com.diagnese.app.core.data.network.disease.DiseaseResponse
-import com.diagnese.app.core.data.network.disease.PredictResponse
-import com.diagnese.app.core.data.network.disease.SymptomsResponse
+import com.diagnese.app.core.data.network.disease.PostResponse
+import com.diagnese.app.core.data.network.disease.PredictionResponse
 import com.diagnese.app.core.data.network.news.NewsApiService
 import com.diagnese.app.core.data.network.news.NewsResponse
 import com.diagnese.app.core.data.state.Resource
@@ -59,7 +59,7 @@ class NetworkDataSource @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun predictDisease(predictRequest: JSONObject) : Flow<Resource<PredictResponse>>{
+    suspend fun predictDisease(predictRequest: JSONObject) : Flow<Resource<PostResponse>>{
         return flow {
             try {
                 val response = diseaseApiService.predictDisease(predictRequest)
@@ -75,7 +75,7 @@ class NetworkDataSource @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun getSymptoms() : Flow<Resource<SymptomsResponse>>{
+    suspend fun getSymptoms() : Flow<Resource<PredictionResponse>>{
         return flow {
             try {
                 val response = diseaseApiService.getSymptoms()

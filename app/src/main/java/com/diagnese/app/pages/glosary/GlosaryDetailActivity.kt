@@ -1,8 +1,6 @@
 package com.diagnese.app.pages.glosary
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -40,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diagnese.app.components.widgets.CenterAppBar
 import com.diagnese.app.utils.Constants
+import com.diagnese.app.utils.findActivity
 
 class GlosaryDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,8 +134,3 @@ fun GlosaryDetailPage(
     }
 }
 
-private fun Context.findActivity(): Activity? = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
-}

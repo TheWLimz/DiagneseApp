@@ -1,5 +1,8 @@
 package com.diagnese.app.pages.checkup.screens
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,13 +29,25 @@ import androidx.navigation.NavHostController
 import com.diagnese.app.R
 import com.diagnese.app.components.widgets.ButtonComponent
 import com.diagnese.app.components.widgets.CheckupStepSection
+import com.diagnese.app.components.widgets.SelectBox
+import com.diagnese.app.pages.checkup.CheckupViewModel
 import com.diagnese.app.utils.Constants
+import org.json.JSONObject
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun CheckOnceScreen(
     modifier : Modifier = Modifier,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    symptomsValue : String,
+    viewModel : CheckupViewModel,
+    feels : Int
 ){
+
+    val parseJSON = "{\"$symptomsValue\": $feels }"
+
+
+
     Scaffold {
 
         LazyColumn(
@@ -62,35 +77,23 @@ fun CheckOnceScreen(
 
                 item {
                     TextWithCardLayout(
-                        text = "Body Part : ",
-                        modifier = Modifier.padding(15.dp)
-                    ) {
-
-                    }
-                }
-
-                item {
-                    TextWithCardLayout(
                         text = "Symptoms : ",
-                        modifier = Modifier.padding(15.dp)
-
+                        modifier = Modifier
+                            .padding(15.dp)
+                            .height(300.dp)
                     ) {
-
+                        Column(modifier = Modifier.padding(10.dp)) {
+                            SelectBox(text = symptomsValue)
+                        }
                     }
                 }
-
-               item {
-                   TextWithCardLayout(
-                       text = "Any Signs : ",
-                       modifier = Modifier.padding(15.dp)
-                   ) {
-
-                   }
-               }
 
 
                item{
-                   ButtonComponent(buttonMenu = stringResource(id = R.string.next), modifier = Modifier.fillMaxWidth().padding(15.dp), onClick = {
+                   ButtonComponent(buttonMenu = stringResource(id = R.string.next), modifier = Modifier
+                       .fillMaxWidth()
+                       .padding(15.dp), onClick = {
+                       viewModel.predictDiseaseData(JSONObject(parseJSON))
                         navHostController.navigate("result")
                    })
                }

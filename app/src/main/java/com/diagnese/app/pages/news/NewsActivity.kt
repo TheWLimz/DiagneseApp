@@ -1,5 +1,6 @@
 package com.diagnese.app.pages.news
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -18,6 +19,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import com.diagnese.app.components.widgets.CenterAppBar
 import com.diagnese.app.components.widgets.Loading
 import com.diagnese.app.components.widgets.NewsCard
@@ -66,7 +68,11 @@ fun NewsPage(
                     }
                 } else {
                     items(items = newsData, key = { item -> item.title!! }){
-                        NewsCard(imageUrl = it.url, title = it.title ?: "")
+                        NewsCard(imageUrl = it.urlToImage as String, title = it.title ?: "", onClick = {
+                            val intent = Intent(context, NewsDetailActivity::class.java)
+                            intent.putExtra("url", it.url)
+                            context.startActivity(intent)
+                        })
                     }
                 }
                }

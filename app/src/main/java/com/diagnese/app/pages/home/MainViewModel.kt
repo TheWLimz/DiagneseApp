@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diagnese.app.BuildConfig
+import com.diagnese.app.core.data.local.NewsEntity
 import com.diagnese.app.core.data.network.news.NewsResponse
 import com.diagnese.app.core.data.state.Resource
 import com.diagnese.app.core.domain.usecase.firebase.FirebaseUseCase
@@ -38,6 +39,18 @@ class MainViewModel @Inject constructor(private val newsUseCase: NewsUseCase, pr
    private fun getAllNews(key : String) = viewModelScope.launch {
         newsUseCase.getAllNews(key).collect{ response ->
             _newsPagingData.value = response
+        }
+    }
+
+   fun insertBookmark(newsEntity: NewsEntity){
+       viewModelScope.launch {
+           newsUseCase.insertBookmark(newsEntity)
+       }
+   }
+
+    fun deleteBookmark(newsEntity: NewsEntity){
+        viewModelScope.launch {
+            newsUseCase.deleteBookmark(newsEntity)
         }
     }
 }

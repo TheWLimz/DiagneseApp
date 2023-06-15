@@ -1,6 +1,9 @@
 package com.diagnese.app.pages.settings
 
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,15 +24,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.viewModels
 import com.diagnese.app.components.widgets.CenterAppBar
 import com.diagnese.app.components.widgets.SettingComponent
 import com.diagnese.app.model.Data
 import com.diagnese.app.model.SettingsMenuItem
+import com.diagnese.app.pages.profile.ProfileActivity
+import com.diagnese.app.pages.welcome.WelcomeActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 @OptIn(ExperimentalMaterial3Api::class)
 class SettingsMenuFragment : Fragment() {
 
+    private val settingsMenuViewModel by viewModels<SettingsMenuViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +45,7 @@ class SettingsMenuFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply { 
             setContent { 
-                SettingsMenu()
+                SettingsMenu(viewModel = settingsMenuViewModel)
             }
         }
     }
@@ -47,7 +55,8 @@ class SettingsMenuFragment : Fragment() {
 @ExperimentalMaterial3Api
 @Composable
 fun SettingsMenu(
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    viewModel: SettingsMenuViewModel
 ){
     val context = LocalContext.current
     Scaffold( 
@@ -61,6 +70,9 @@ fun SettingsMenu(
                    leading = menuItem.leadingIcon,
                    title = menuItem.title,
                    trailing = menuItem.trailingIcon,
+                   onClick = {
+                       setMenu(context, menuItem.title)
+                   }
 
                )
                Divider(color = Color.LightGray)
@@ -77,12 +89,26 @@ fun SettingsMenu(
                    title = settingItem.title,
                    trailing = settingItem.trailingIcon,
                    textColor = Color.Red,
-                   iconColor = Color.Red
+                   iconColor = Color.Red,
+                   onClick = {
+                       viewModel.logout()
+                       context.startActivity(Intent(context, WelcomeActivity::class.java))
+                       (context as Activity).finish()
+                   }
                )
            }
         }
     }
     
+}
+
+private fun setMenu(context : Context, item : String ){
+    when(item){
+        "Edit Profile" -> {
+            context.startActivity(Intent(context, ProfileActivity::class.java))
+        }
+
+    }
 }
 
 

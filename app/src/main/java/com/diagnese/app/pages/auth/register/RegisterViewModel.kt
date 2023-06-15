@@ -16,13 +16,16 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(private val firebaseUseCase: FirebaseUseCase) : ViewModel() {
 
     private val _registerState = MutableStateFlow<Resource<FirebaseUser>?>(null)
-    val registerState : StateFlow<Resource<FirebaseUser>?> = _registerState
-
-
 
     fun register(email: String, password : String, user : User) = viewModelScope.launch {
         _registerState.value = Resource.Loading()
         val result = firebaseUseCase.register(email, password , user)
         _registerState.value = result
         }
+
+    fun getUser(){
+        viewModelScope.launch {
+            firebaseUseCase.getUser()
+        }
+    }
 }

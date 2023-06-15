@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.diagnese.app.core.data.network.disease.PredictResponse
-import com.diagnese.app.core.data.network.disease.SymptomsResponse
+import com.diagnese.app.core.data.network.disease.PostResponse
+import com.diagnese.app.core.data.network.disease.PredictionResponse
 import com.diagnese.app.core.domain.usecase.disease.DiseaseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,11 +19,11 @@ class CheckupViewModel @Inject constructor(private val diseaseUseCase: DiseaseUs
         getSymptoms()
     }
 
-    private val _predictResponse = MutableLiveData<PredictResponse>()
-    val predictResponse : LiveData<PredictResponse> = _predictResponse
+    private val _predictResponse = MutableLiveData<PostResponse>()
+    val predictResponse : LiveData<PostResponse> = _predictResponse
 
-    private val _symptomsData = MutableLiveData<SymptomsResponse>()
-    val symptomsData : LiveData<SymptomsResponse> = _symptomsData
+    private val _symptomsData = MutableLiveData<PredictionResponse>()
+    val symptomsData : LiveData<PredictionResponse> = _symptomsData
 
     fun predictDiseaseData(predictData : JSONObject){
         viewModelScope.launch {

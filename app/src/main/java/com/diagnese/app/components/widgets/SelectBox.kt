@@ -23,7 +23,7 @@ import com.diagnese.app.utils.Constants
 fun SelectBox(
     modifier : Modifier = Modifier,
     text : String,
-    onClick : () -> Unit = {}
+    onClick : () -> Unit = {},
 ){
     
     Card(modifier = modifier
